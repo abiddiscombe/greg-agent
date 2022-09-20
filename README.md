@@ -1,16 +1,16 @@
 # greg-connector
-Exposes a read-only API which exposes basic information (name, species, and health) about the plants you've registered in the [Greg](https://greg.app) app.
+Exposes a read-only API which shares basic information (name, species, and health) about the plants you've registered in the [Greg](https://greg.app) app.
 
 To use this app, you'll need your *bearer token* from the Greg app. This can be extracted using packet sniffing software, which can read HTTPS requests from your phone and thus extract the bearer token from the request header.
 
-Using this app means your bearer token remains private, but basic information about your plants is available on the web, consumable via a JSON API!
+Using this app means your bearer token remains private, yet basic information about your plants is available on the web via a JSON API for all to see!
 
 ## Features
 The following features are currently supported:
 
-- [*] Exposes a JSON API whilst keeping the bearer token private.
-- [*] Provides a boolean value to represent the general health of each plant ('*does it need watering?*').
-- [*] Caches the API response for 30 mins in order to reduce the the number of calls made to the Greg Internal API and improve general performance.
+- [x] Exposes a JSON API whilst keeping the bearer token private.
+- [x] Provides a boolean value to represent the general health of each plant ('*does it need watering?*').
+- [x] Caches the API response for 30 mins in order to reduce the the number of calls made to the Greg Internal API and improve general performance.
 
 The following features are in the works:
 
