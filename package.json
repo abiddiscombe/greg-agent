@@ -1,14 +1,15 @@
 {
-  "name": "greg-connector",
+  "name": "greg-agent",
   "version": "1.0.0",
-  "description": "A stateless API for exposing Greg's API via Bearer token.",
-  "main": "src/index.js",
+  "description": "Exposes an API which shares basic information about the plants you've registered in the Greg app",
   "scripts": {
-    "test": "node src/index.mjs"
+    "test": "node src/index.mjs -development",
+    "deploy": "node src/index.mjs"
   },
-  "author": "@abiddiscombe",
+  "author": "https://github.com/abiddiscombe",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "node-fetch": "^3.2.10"
   }
