@@ -2,15 +2,13 @@
 
 import fetch from 'node-fetch';
 
-import { time } from '../utils/time.mjs'
-
 export {
     greg
 }
 
 const greg = {
 
-    refresh: async function callGreg(authToken) {
+    refresh: async (authToken) => {
     
         let response = await fetch('https://api.greg.app/plants/plants-v2/', {
             headers: {
@@ -22,18 +20,18 @@ const greg = {
             return false
         }
 
-        let responseJSON = await response.json()
+        let responseJson = await response.json()
 
         let output = {
-            ts: time.now(),
+            ts: Math.floor(Date.now() / 1000),
             plants: []
         }
 
-        for ( let i = 0; i < responseJSON.plants.length; i++ ) {
+        for ( let i = 0; i < responseJson.plants.length; i++ ) {
             output.plants.push({
-                name: responseJSON.plants[i].name,
-                species: responseJSON.plants[i].species_name,
-                isHealthy: responseJSON.plants[i].plantcard_sections[0].items[0].is_healthy
+                name: responseJson.plants[i].name,
+                species: responseJson.plants[i].species_name,
+                isHealthy: responseJson.plants[i].plantcard_sections[0].items[0].is_healthy
             })
         }
     

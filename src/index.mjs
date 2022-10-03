@@ -9,7 +9,6 @@ if (process.argv[2] == '-development') {
 import express from 'express'
 
 import { greg } from './utils/greg.mjs'
-import { time } from './utils/time.mjs'
 
 const app = express()
 
@@ -23,47 +22,33 @@ let gregResponseCache = {
     plants: []
 }
 
-
-
-app.get('/', function (req, res) {
-    res.status(404)
-    res.json({
-        'Error': 'The SVG endpoint is not yet supported'
-    })
-})
-
-app.get('/raw', async function (req, res) {
+app.get('/', async function (req, res) {
 
     let requestPayload = {
         status: 200,
         bodyJSON: {}
     }
 
-    if (time.now() - gregResponseCache.ts < 1800) {
+    if (Math.floor(Date.now() / 1000) - gregResponseCache.ts < 1800) {
 
-        // return data from the cache
         requestPayload.bodyJSON = gregResponseCache
 
     } else {
 
-        // fetch new values from the API
         gregResponseCache = await greg.refresh(config.gregBearerToken)
 
-        // check if the request succeeded
         if (!gregResponseCache) {
-            console.error(`🛑 Failed to recieve data from the Greg Internal API. Are the authentication params accurate?`)
+            console.error(`🚨 Error connecting to the Greg Internal API.`)
             requestPayload.status = 500
             requestPayload.bodyJSON = {
-                'Error': 'Failed to connect to the internal Greg API'
+                'Internal Error': 'Error connecting to the Greg Internal API. Check your authentication credentials.'
             }
         } else {
-            // send the newly cached data to the client
             requestPayload.bodyJSON = gregResponseCache
         }
     
     }
-
-    // express: send the data
+    
     res.status(requestPayload.status)
     res.json(requestPayload.bodyJSON)
 
