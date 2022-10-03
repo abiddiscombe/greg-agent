@@ -2,9 +2,10 @@
   "name": "greg-agent",
   "version": "1.0.0",
   "description": "Exposes an API which shares basic information about the plants you've registered in the Greg app",
+  "type": "module",
   "scripts": {
-    "test": "node src/index.mjs -development",
-    "deploy": "node src/index.mjs"
+    "dev": "node src/index.js -development",
+    "deploy": "node src/index.js"
   },
   "author": "https://github.com/abiddiscombe",
   "license": "ISC",

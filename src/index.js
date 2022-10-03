@@ -8,7 +8,7 @@ if (process.argv[2] == '-development') {
 
 import express from 'express'
 
-import { greg } from './utils/greg.mjs'
+import { greg } from './utils/greg.js'
 
 const app = express()
 
