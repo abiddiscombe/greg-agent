@@ -20,7 +20,7 @@ This app is configured using environment variables. The following options are su
 
 | Key              | Mandatory? | Comments                                 |
 |------------------|------------|------------------------------------------|
-| SRV_GREG_TOKEN   | Yes        | A valid bearer token for the Greg API    |
-| SRV_PORT         | No         | By default, server will listen on `3000` |
-| SRV_REFRESH_INT  | No         | Cache refresh interval. The default is set to 1800 seconds (30 mins) |
+| SVR_GREG_TOKEN   | Yes        | A valid bearer token for the Greg API    |
+| SVR_PORT         | No         | By default, server will listen on `3000` |
+| SVR_REFRESH_INT  | No         | Cache refresh interval. The default is set to 1800 seconds (30 mins) |
 
