@@ -1,29 +1,26 @@
-# greg-agent
-Exposes a read-only API which shares basic information (name, species, and health) about the plants you've registered in the [Greg](https://greg.app) app.
+# greg-agent 🌱
+Exposes a read-only JSON API which lists basic information about the plants you've registered in the [Greg](https://greg.app) app, including:
 
-To use this app, you'll need your *bearer token* from the Greg app. This can be extracted using packet sniffing software, which can read HTTPS requests from your phone and thus extract the bearer token from the request header. I used [Charles](https://www.charlesproxy.com).
+- Plant Nickname
+- Plant Species
+- Plant Health (boolean value)
+- Thumbnail and Public Sharing URLs
 
-Using this app means your bearer token remains private, yet basic information about your plants is available on the web via a JSON API!
+I made this app for fun and to learn more about Express and Docker - I have no connection to the team behind the Greg app, apart from being an app user myself!
 
-## Features
-The following features are currently supported:
+## Authentication
+To use this app, you'll need your *bearer token* from the Greg app. This can be extracted using packet sniffing software, which can read HTTPS requests from your phone and thus extract the bearer token from the request header. I used [Charles](https://www.charlesproxy.com). Using this app means your bearer token remains private, yet basic information about your plants is available on the web via a JSON API!
 
-- [x] Exposes a JSON API whilst keeping the bearer token private.
-- [x] Provides a boolean value to represent the general health of each plant ('*does it need watering?*').
-- [x] Caches the Greg internal API response for 30 mins in order to reduce the the number of calls made to Greg servers and improve general performance.
-
-The following features are in the works:
-
-- [ ] A SVG 'card' visual, for displaying plant stats on your GitHub profile.
-- [ ] The potential to secure the public-facing API endpoint using a predefined API key.
+> **Important**  
+> Accessing internal APIs may represent a violation of the ToS for the service you're using. I spoke to the team at Greg who encouraged me to use their internal APIs for this project. Please make your own informed decisions when using this code, and reach out to the Greg team directly before deploying this server.
 
 ## Configuration
-This app is configured using environment variables. The following are supported:
 
-| Key              | Mandatory? | Comments                                |
-|------------------|------------|-----------------------------------------|
-| SERVER_PORT      | No         | By default, server will listen on :3000 |
-| SERVER_AUTH_GREG | Yes        | A valid bearer token for the Greg app * |
+This app is configured using environment variables. The following options are supported:
 
-## An Important Health Warning
-Accessing internal APIs may represent a violation of the ToS for the application or service you're using. To make this app, I spoke to the lovely team at Greg who advised and encouraged me to use their internal APIs. I'd encourage you to make your own informed decisions when using this code, and reach out to the team directly for advice!
+| Key              | Mandatory? | Comments                                 |
+|------------------|------------|------------------------------------------|
+| SRV_GREG_TOKEN   | Yes        | A valid bearer token for the Greg API    |
+| SRV_PORT         | No         | By default, server will listen on `3000` |
+| SRV_REFRESH_INT  | No         | Cache refresh interval. The default is set to 1800 seconds (30 mins) |
+
