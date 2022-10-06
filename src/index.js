@@ -6,52 +6,37 @@ if (process.argv[2] == '-development') {
     dotenv.config()
 }
 
-import express from 'express'
-
 import { greg } from './utils/greg.js'
+import express from 'express'
 
 const app = express()
 
 const config = {
-    port: process.env.SERVER_PORT || 3000,
-    gregBearerToken: process.env.SERVER_AUTH_GREG
+    port: process.env.SVR_PORT || 3000,
+    greg: {
+        bearerToken: process.env.SVR_GREG_TOKEN,
+        refreshInterval: process.env.SVR_REFRESH_INTERVAL || 1800
+    }
 }
 
-let gregResponseCache = {
-    ts: 0,
-    plants: []
+if (!config.greg.bearerToken) {
+    throw new Error("🛑 Greg API credentials are missing. Aborting.")
+}
+
+let dataCache = {
+    status: 200,
+    payload: {
+        lastFetch: 0,
+        plants: []
+    }
 }
 
 app.get('/', async function (req, res) {
-
-    let requestPayload = {
-        status: 200,
-        bodyJSON: {}
+    if (Math.floor(Date.now() / 1000) - dataCache.payload.lastFetch > config.greg.refreshInterval || dataCache.status != 200) {
+        dataCache = await greg.fetch(dataCache, config.greg.bearerToken)
     }
-
-    if (Math.floor(Date.now() / 1000) - gregResponseCache.ts < 1800) {
-
-        requestPayload.bodyJSON = gregResponseCache
-
-    } else {
-
-        gregResponseCache = await greg.refresh(config.gregBearerToken)
-
-        if (!gregResponseCache) {
-            console.error(`🚨 Error connecting to the Greg Internal API.`)
-            requestPayload.status = 500
-            requestPayload.bodyJSON = {
-                'Internal Error': 'Error connecting to the Greg Internal API. Check your authentication credentials.'
-            }
-        } else {
-            requestPayload.bodyJSON = gregResponseCache
-        }
-    
-    }
-    
-    res.status(requestPayload.status)
-    res.json(requestPayload.bodyJSON)
-
+    res.status(dataCache.status)
+    res.json(dataCache.payload)
 })
 
 app.listen(config.port, () => {
